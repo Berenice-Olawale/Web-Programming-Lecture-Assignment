@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OOJS Shape Generator</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f4f6f9;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .controls {
+            margin: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #2563eb;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #1e40af;
+        }
+
+        .shape {
+            margin: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>OOJS Shape Generator</h1>
+
+<div class="controls">
+    <button onclick="createSquare()">Create Square</button>
+    <button onclick="createCircle()">Create Circle</button>
+    <button onclick="clearShapes()">Clear</button>
+</div>
+
+<div id="canvas"></div>
+
+<script>
+
+
+class Shape {
+    constructor(color, size) {
+        this.color = color;
+        this.size = size;
+    }
+
+    draw() {
+        console.log("Drawing shape...");
+    }
+}
+
+
+class Square extends Shape {
+    constructor(color, size) {
+        super(color, size); 
+    }
+
+    draw() {
+        let div = document.createElement("div");
+        div.className = "shape";
+        div.style.width = this.size + "px";
+        div.style.height = this.size + "px";
+        div.style.backgroundColor = this.color;
+
+        document.getElementById("canvas").appendChild(div);
+    }
+}
+
+// CHILD CLASS: CIRCLE
+class Circle extends Shape {
+    constructor(color, size) {
+        super(color, size);
+    }
+
+    draw() {
+        let div = document.createElement("div");
+        div.className = "shape";
+        div.style.width = this.size + "px";
+        div.style.height = this.size + "px";
+        div.style.backgroundColor = this.color;
+        div.style.borderRadius = "50%";
+
+        document.getElementById("canvas").appendChild(div);
+    }
+}
+
+
+
+function createSquare() {
+    let square = new Square(randomColor(), randomSize());
+    square.draw();
+}
+
+function createCircle() {
+    let circle = new Circle(randomColor(), randomSize());
+    circle.draw();
+}
+
+function clearShapes() {
+    document.getElementById("canvas").innerHTML = "";
+}
+
+
+
+function randomColor() {
+    return "#" + Math.floor(Math.random()*16777215).toString(16);
+}
+
+function randomSize() {
+    return Math.floor(Math.random() * 100) + 50;
+}
+
+</script>
+
+</body>
+</html>

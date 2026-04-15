@@ -1,0 +1,43 @@
+{
+  "notebooks": [
+    {
+      "id": 1,
+      "manufacturer": "HP",
+      "type": "COMPAQ 615 NX556EA",
+      "display": 15.6,
+      "memory": 1024,
+      "harddisk": 160,
+      "videocontroller": "ATi Mobility Radeon HD3200 256MB",
+      "price": 95120,
+      "processorid": 1,
+      "opsystemid": 1,
+      "pieces": 0
+    },
+    {
+      "id": 2,
+      "manufacturer": "ASUS",
+      "type": "K51AC-SX001D",
+      "display": 15.6,
+      "memory": 2048,
+      "harddisk": 250,
+      "videocontroller": "ATi Mobility Radeon HD3200 256MB",
+      "price": 101200,
+      "processorid": 1,
+      "opsystemid": 8,
+      "pieces": 0
+    },
+    {
+      "id": 3,
+      "manufacturer": "DELL",
+      "type": "Inspiron 1545",
+      "display": 15.6,
+      "memory": 2048,
+      "harddisk": 320,
+      "videocontroller": "Intel GMA X4500",
+      "price": 98000,
+      "processorid": 2,
+      "opsystemid": 2,
+      "pieces": 3
+    }
+  ]
+}

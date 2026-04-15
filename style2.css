@@ -1,0 +1,117 @@
+/* GENERAL PAGE */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+/* FORM CONTAINER */
+.notebook-form {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+    width: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* TABLE CONTAINER */
+.notebook-table {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px auto;
+    width: 90%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* TABLE */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.list th {
+    background-color: #1f2937;
+    color: white;
+}
+
+td, th {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+/* ROW HOVER EFFECT */
+tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* INPUTS */
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+/* INPUT FOCUS EFFECT */
+input:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+
+/* BUTTON STYLE */
+input[type="submit"] {
+    background-color: #2563eb;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* BUTTON HOVER */
+input[type="submit"]:hover {
+    background-color: #1e40af;
+}
+
+/* ACTION BUTTONS */
+button {
+    padding: 6px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* EDIT BUTTON */
+button:first-child {
+    background-color: #10b981;
+    color: white;
+}
+
+/* DELETE BUTTON */
+button:last-child {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* BUTTON HOVER EFFECT */
+button:hover {
+    opacity: 0.85;
+}
+
+/* FORM BUTTON ALIGNMENT */
+.form-action-buttons {
+    text-align: right;
+}

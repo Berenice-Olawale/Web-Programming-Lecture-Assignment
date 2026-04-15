@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch API CRUD</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            padding: 20px;
+        }
+
+        .form, .table-container {
+            background: white;
+            padding: 20px;
+            margin: auto;
+            width: 70%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        input {
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
+        }
+
+        button {
+            margin-top: 5px;
+            padding: 6px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Fetch API CRUD - Notebooks</h1>
+
+<div class="form">
+<form onsubmit="event.preventDefault(); onSubmit();">
+
+<input id="manufacturer" placeholder="Manufacturer">
+<input id="type" placeholder="Type">
+<input id="display" placeholder="Display">
+<input id="memory" placeholder="Memory">
+<input id="harddisk" placeholder="Harddisk">
+<input id="videocontroller" placeholder="Video Controller">
+<input id="price" placeholder="Price">
+<input id="processorid" placeholder="Processor ID">
+<input id="opsystemid" placeholder="OS ID">
+<input id="pieces" placeholder="Pieces">
+
+<button type="submit">Submit</button>
+
+</form>
+</div>
+
+<br>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Manufacturer</th>
+<th>Type</th>
+<th>Display</th>
+<th>Memory</th>
+<th>Disk</th>
+<th>Video</th>
+<th>Price</th>
+<th>Processor</th>
+<th>OS</th>
+<th>Pieces</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<script>
+
+const API_URL = "http://localhost:3000/notebooks";
+let selectedId = null;
+
+// LOAD DATA
+function loadData() {
+    fetch(API_URL)
+    .then(res => res.json())
+    .then(data => displayData(data));
+}
+
+// DISPLAY
+function displayData(data) {
+    let table = document.getElementById("tableBody");
+    table.innerHTML = "";
+
+    data.forEach(item => {
+        let row = table.insertRow();
+
+        row.innerHTML = `
+            <td>${item.manufacturer}</td>
+            <td>${item.type}</td>
+            <td>${item.display}</td>
+            <td>${item.memory}</td>
+            <td>${item.harddisk}</td>
+            <td>${item.videocontroller}</td>
+            <td>${item.price}</td>
+            <td>${item.processorid}</td>
+            <td>${item.opsystemid}</td>
+            <td>${item.pieces}</td>
+            <td>
+                <button onclick="editData(${item.id})">Edit</button>
+                <button onclick="deleteData(${item.id})">Delete</button>
+            </td>
+        `;
+    });
+}
+
+// CREATE / UPDATE
+function onSubmit() {
+
+    let data = {
+        manufacturer: manufacturer.value,
+        type: type.value,
+        display: display.value,
+        memory: memory.value,
+        harddisk: harddisk.value,
+        videocontroller: videocontroller.value,
+        price: price.value,
+        processorid: processorid.value,
+        opsystemid: opsystemid.value,
+        pieces: pieces.value
+    };
+
+    if (selectedId == null) {
+        fetch(API_URL, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        }).then(loadData);
+    } else {
+        fetch(API_URL + "/" + selectedId, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        }).then(() => {
+            selectedId = null;
+            loadData();
+        });
+    }
+
+    document.querySelector("form").reset();
+}
+
+// DELETE
+function deleteData(id) {
+    fetch(API_URL + "/" + id, {
+        method: "DELETE"
+    }).then(loadData);
+}
+
+// EDIT
+function editData(id) {
+    fetch(API_URL + "/" + id)
+    .then(res => res.json())
+    .then(data => {
+        manufacturer.value = data.manufacturer;
+        type.value = data.type;
+        display.value = data.display;
+        memory.value = data.memory;
+        harddisk.value = data.harddisk;
+        videocontroller.value = data.videocontroller;
+        price.value = data.price;
+        processorid.value = data.processorid;
+        opsystemid.value = data.opsystemid;
+        pieces.value = data.pieces;
+
+        selectedId = id;
+    });
+}
+
+loadData();
+
+</script>
+
+</body>
+</html>
