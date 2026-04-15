@@ -1,94 +1,165 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>React CRUD</title>
-
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-
+    <title>React Notebook CRUD</title>
+    <link rel="stylesheet" href="style2.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
 <body>
 
-<h1>Notebook CRUD (React)</h1>
+<h1><center>React Notebook CRUD Application</center></h1>
 
 <div id="root"></div>
 
-<script>
-
-const { useState } = React;
+<script type="text/babel">
 
 function App() {
 
-  const [notebooks, setNotebooks] = useState([
-    { id: 1, manufacturer: "Dell", type: "Latitude", price: 450 },
-    { id: 2, manufacturer: "HP", type: "ProBook", price: 600 }
-  ]);
+    const [notebooks, setNotebooks] = React.useState([]);
+    const [formData, setFormData] = React.useState({
+        manufacturer: "",
+        type: "",
+        display: "",
+        memory: "",
+        harddisk: "",
+        videocontroller: "",
+        price: "",
+        processorid: "",
+        opsystemid: "",
+        pieces: ""
+    });
 
-  const [manufacturer, setManufacturer] = useState("");
-  const [type, setType] = useState("");
-  const [price, setPrice] = useState("");
+    const [selectedIndex, setSelectedIndex] = React.useState(null);
 
-  function addNotebook() {
-    if (manufacturer === "" || type === "" || price === "") return;
+    function handleChange(e) {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    }
 
-    const newNotebook = {
-      id: Date.now(),
-      manufacturer: manufacturer,
-      type: type,
-      price: price
-    };
+    function handleSubmit(e) {
+        e.preventDefault();
 
-    setNotebooks([...notebooks, newNotebook]);
+        if (formData.manufacturer === "") {
+            alert("Manufacturer is required!");
+            return;
+        }
 
-    setManufacturer("");
-    setType("");
-    setPrice("");
-  }
+        if (selectedIndex === null) {
+            setNotebooks([...notebooks, formData]);
+        } else {
+            let updated = [...notebooks];
+            updated[selectedIndex] = formData;
+            setNotebooks(updated);
+            setSelectedIndex(null);
+        }
 
-  function deleteNotebook(id) {
-    setNotebooks(notebooks.filter(n => n.id !== id));
-  }
+        resetForm();
+    }
 
-  return (
-    React.createElement("div", null,
+    function resetForm() {
+        setFormData({
+            manufacturer: "",
+            type: "",
+            display: "",
+            memory: "",
+            harddisk: "",
+            videocontroller: "",
+            price: "",
+            processorid: "",
+            opsystemid: "",
+            pieces: ""
+        });
+    }
 
-      React.createElement("input", {
-        placeholder: "Manufacturer",
-        value: manufacturer,
-        onChange: e => setManufacturer(e.target.value)
-      }),
+    function onEdit(index) {
+        setFormData(notebooks[index]);
+        setSelectedIndex(index);
+    }
 
-      React.createElement("input", {
-        placeholder: "Type",
-        value: type,
-        onChange: e => setType(e.target.value)
-      }),
+    function onDelete(index) {
+        if (confirm("Are you sure?")) {
+            const updated = notebooks.filter((_, i) => i !== index);
+            setNotebooks(updated);
+        }
+    }
 
-      React.createElement("input", {
-        placeholder: "Price",
-        value: price,
-        onChange: e => setPrice(e.target.value)
-      }),
+    return (
+        <div>
+            <div className="notebook-form">
+                <form onSubmit={handleSubmit}>
 
-      React.createElement("button", { onClick: addNotebook }, "Add"),
+                    <input name="manufacturer" placeholder="Manufacturer" value={formData.manufacturer} onChange={handleChange} />
+                    <input name="type" placeholder="Type" value={formData.type} onChange={handleChange} />
+                    <input name="display" type="number" placeholder="Display" value={formData.display} onChange={handleChange} />
+                    <input name="memory" type="number" placeholder="Memory" value={formData.memory} onChange={handleChange} />
+                    <input name="harddisk" type="number" placeholder="Hard Disk" value={formData.harddisk} onChange={handleChange} />
+                    <input name="videocontroller" placeholder="Video Controller" value={formData.videocontroller} onChange={handleChange} />
+                    <input name="price" type="number" placeholder="Price" value={formData.price} onChange={handleChange} />
+                    <input name="processorid" type="number" placeholder="Processor ID" value={formData.processorid} onChange={handleChange} />
+                    <input name="opsystemid" type="number" placeholder="OS ID" value={formData.opsystemid} onChange={handleChange} />
+                    <input name="pieces" type="number" placeholder="Pieces" value={formData.pieces} onChange={handleChange} />
 
-      React.createElement("ul", null,
-        notebooks.map(n =>
-          React.createElement("li", { key: n.id },
-            n.manufacturer + " - " + n.type + " - " + n.price + " ",
+                    <div className="form-action-buttons">
+                        <input type="submit" value="Submit" />
+                    </div>
 
-            React.createElement("button", {
-              onClick: () => deleteNotebook(n.id)
-            }, "Delete")
-          )
-        )
-      )
-    )
-  );
+                </form>
+            </div>
+
+            <br />
+            <div className="notebook-table">
+                <table className="list">
+
+                    <thead>
+                        <tr>
+                            <th>Manufacturer</th>
+                            <th>Type</th>
+                            <th>Display</th>
+                            <th>Memory</th>
+                            <th>Disk</th>
+                            <th>Video</th>
+                            <th>Price</th>
+                            <th>Processor</th>
+                            <th>OS</th>
+                            <th>Pieces</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {notebooks.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.manufacturer}</td>
+                                <td>{item.type}</td>
+                                <td>{item.display}</td>
+                                <td>{item.memory}</td>
+                                <td>{item.harddisk}</td>
+                                <td>{item.videocontroller}</td>
+                                <td>{item.price}</td>
+                                <td>{item.processorid}</td>
+                                <td>{item.opsystemid}</td>
+                                <td>{item.pieces}</td>
+                                <td>
+                                    <button onClick={() => onEdit(index)}>Edit</button>
+                                    <button onClick={() => onDelete(index)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 
 </script>
 
