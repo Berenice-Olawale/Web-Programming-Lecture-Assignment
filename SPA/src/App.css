@@ -1,0 +1,49 @@
+.spa-page {
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+}
+
+.spa-title {
+  margin-bottom: 10px;
+  color: #1f2937;
+  font-size: 42px;
+}
+
+.spa-subtitle {
+  margin-bottom: 20px;
+  color: #475569;
+  font-size: 18px;
+}
+
+.section-title {
+  color: #0f172a;
+  margin-bottom: 20px;
+}
+
+.spa-menu {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.spa-menu button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #0ea5e9;
+  color: white;
+  cursor: pointer;
+}
+
+.spa-menu button:hover {
+  background-color: #0284c7;
+}
+
+.spa-content {
+  margin-top: 20px;
+}

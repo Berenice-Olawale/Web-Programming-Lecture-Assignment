@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>React CRUD</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+</head>
+
+<body>
+
+<h1>Notebook CRUD (React)</h1>
+
+<div id="root"></div>
+
+<script>
+
+const { useState } = React;
+
+function App() {
+
+  const [notebooks, setNotebooks] = useState([
+    { id: 1, manufacturer: "Dell", type: "Latitude", price: 450 },
+    { id: 2, manufacturer: "HP", type: "ProBook", price: 600 }
+  ]);
+
+  const [manufacturer, setManufacturer] = useState("");
+  const [type, setType] = useState("");
+  const [price, setPrice] = useState("");
+
+  function addNotebook() {
+    if (manufacturer === "" || type === "" || price === "") return;
+
+    const newNotebook = {
+      id: Date.now(),
+      manufacturer: manufacturer,
+      type: type,
+      price: price
+    };
+
+    setNotebooks([...notebooks, newNotebook]);
+
+    setManufacturer("");
+    setType("");
+    setPrice("");
+  }
+
+  function deleteNotebook(id) {
+    setNotebooks(notebooks.filter(n => n.id !== id));
+  }
+
+  return (
+    React.createElement("div", null,
+
+      React.createElement("input", {
+        placeholder: "Manufacturer",
+        value: manufacturer,
+        onChange: e => setManufacturer(e.target.value)
+      }),
+
+      React.createElement("input", {
+        placeholder: "Type",
+        value: type,
+        onChange: e => setType(e.target.value)
+      }),
+
+      React.createElement("input", {
+        placeholder: "Price",
+        value: price,
+        onChange: e => setPrice(e.target.value)
+      }),
+
+      React.createElement("button", { onClick: addNotebook }, "Add"),
+
+      React.createElement("ul", null,
+        notebooks.map(n =>
+          React.createElement("li", { key: n.id },
+            n.manufacturer + " - " + n.type + " - " + n.price + " ",
+
+            React.createElement("button", {
+              onClick: () => deleteNotebook(n.id)
+            }, "Delete")
+          )
+        )
+      )
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+
+</script>
+
+</body>
+</html>
