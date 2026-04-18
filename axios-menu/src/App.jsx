@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 
-const API_URL = "http://127.0.0.1:3000/notebooks";
-
 function App() {
   const [notebooks, setNotebooks] = useState([]);
   const [formData, setFormData] = useState({
@@ -25,9 +23,9 @@ function App() {
   }, []);
 
   function loadData() {
-    axios.get(API_URL)
-      .then(res => setNotebooks(res.data))
-      .catch(err => console.error(err));
+    axios.get("./notebooks.json")
+      .then((res) => setNotebooks(res.data))
+      .catch((err) => console.error(err));
   }
 
   function handleChange(e) {
@@ -40,33 +38,46 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (formData.manufacturer === "") {
+    if (formData.manufacturer.trim() === "") {
       alert("Manufacturer required");
       return;
     }
 
     if (selectedId === null) {
-      axios.post(API_URL, formData)
-        .then(() => {
-          loadData();
-          resetForm();
-        });
+      const newNotebook = {
+        ...formData,
+        id: Date.now().toString()
+      };
+      setNotebooks([...notebooks, newNotebook]);
     } else {
-      axios.put(API_URL + "/" + selectedId, formData)
-        .then(() => {
-          loadData();
-          resetForm();
-        });
+      const updated = notebooks.map((item) =>
+        item.id === selectedId ? { ...formData, id: selectedId } : item
+      );
+      setNotebooks(updated);
+      setSelectedId(null);
     }
+
+    resetForm();
   }
 
   function handleDelete(id) {
-    axios.delete(API_URL + "/" + id)
-      .then(() => loadData());
+    const updated = notebooks.filter((item) => item.id !== id);
+    setNotebooks(updated);
   }
 
   function handleEdit(item) {
-    setFormData(item);
+    setFormData({
+      manufacturer: item.manufacturer,
+      type: item.type,
+      display: item.display,
+      memory: item.memory,
+      harddisk: item.harddisk,
+      videocontroller: item.videocontroller,
+      price: item.price,
+      processorid: item.processorid,
+      opsystemid: item.opsystemid,
+      pieces: item.pieces
+    });
     setSelectedId(item.id);
   }
 
@@ -91,20 +102,75 @@ function App() {
       <h1>Notebook CRUD (Axios)</h1>
 
       <form onSubmit={handleSubmit} className="form">
-        <input name="manufacturer" placeholder="Manufacturer" value={formData.manufacturer} onChange={handleChange} />
-        <input name="type" placeholder="Type" value={formData.type} onChange={handleChange} />
-        <input name="display" placeholder="Display" value={formData.display} onChange={handleChange} />
-        <input name="memory" placeholder="Memory" value={formData.memory} onChange={handleChange} />
-        <input name="harddisk" placeholder="Hard Disk" value={formData.harddisk} onChange={handleChange} />
-        <input name="videocontroller" placeholder="Video" value={formData.videocontroller} onChange={handleChange} />
-        <input name="price" placeholder="Price" value={formData.price} onChange={handleChange} />
-        <input name="processorid" placeholder="Processor ID" value={formData.processorid} onChange={handleChange} />
-        <input name="opsystemid" placeholder="OS ID" value={formData.opsystemid} onChange={handleChange} />
-        <input name="pieces" placeholder="Pieces" value={formData.pieces} onChange={handleChange} />
+        <input
+          name="manufacturer"
+          placeholder="Manufacturer"
+          value={formData.manufacturer}
+          onChange={handleChange}
+        />
+        <input
+          name="type"
+          placeholder="Type"
+          value={formData.type}
+          onChange={handleChange}
+        />
+        <input
+          name="display"
+          placeholder="Display"
+          value={formData.display}
+          onChange={handleChange}
+        />
+        <input
+          name="memory"
+          placeholder="Memory"
+          value={formData.memory}
+          onChange={handleChange}
+        />
+        <input
+          name="harddisk"
+          placeholder="Hard Disk"
+          value={formData.harddisk}
+          onChange={handleChange}
+        />
+        <input
+          name="videocontroller"
+          placeholder="Video"
+          value={formData.videocontroller}
+          onChange={handleChange}
+        />
+        <input
+          name="price"
+          placeholder="Price"
+          value={formData.price}
+          onChange={handleChange}
+        />
+        <input
+          name="processorid"
+          placeholder="Processor ID"
+          value={formData.processorid}
+          onChange={handleChange}
+        />
+        <input
+          name="opsystemid"
+          placeholder="OS ID"
+          value={formData.opsystemid}
+          onChange={handleChange}
+        />
+        <input
+          name="pieces"
+          placeholder="Pieces"
+          value={formData.pieces}
+          onChange={handleChange}
+        />
 
-        <button type="submit">
-          {selectedId ? "Update" : "Add Notebook"}
-        </button>
+        <div className="buttons">
+          <button type="submit">
+            {selectedId ? "Update Notebook" : "Add Notebook"}
+          </button>
+          <button type="button" onClick={resetForm}>
+            Clear
+          </button>
+        </div>
       </form>
 
       <table>
@@ -119,7 +185,7 @@ function App() {
         </thead>
 
         <tbody>
-          {notebooks.map(item => (
+          {notebooks.map((item) => (
             <tr key={item.id}>
               <td>{item.manufacturer}</td>
               <td>{item.type}</td>
