@@ -10,14 +10,11 @@
 
 <body>
 
-<h1><center>React Notebook CRUD Application</center></h1>
-
 <div id="root"></div>
 
 <script type="text/babel">
 
 function App() {
-
     const [notebooks, setNotebooks] = React.useState([]);
     const [formData, setFormData] = React.useState({
         manufacturer: "",
@@ -44,7 +41,7 @@ function App() {
     function handleSubmit(e) {
         e.preventDefault();
 
-        if (formData.manufacturer === "") {
+        if (formData.manufacturer.trim() === "") {
             alert("Manufacturer is required!");
             return;
         }
@@ -52,7 +49,7 @@ function App() {
         if (selectedIndex === null) {
             setNotebooks([...notebooks, formData]);
         } else {
-            let updated = [...notebooks];
+            const updated = [...notebooks];
             updated[selectedIndex] = formData;
             setNotebooks(updated);
             setSelectedIndex(null);
@@ -89,32 +86,99 @@ function App() {
     }
 
     return (
-        <div>
-            <div className="notebook-form">
-                <form onSubmit={handleSubmit}>
+        <div className="container">
+            <h1>React Notebook CRUD Application</h1>
 
-                    <input name="manufacturer" placeholder="Manufacturer" value={formData.manufacturer} onChange={handleChange} />
-                    <input name="type" placeholder="Type" value={formData.type} onChange={handleChange} />
-                    <input name="display" type="number" placeholder="Display" value={formData.display} onChange={handleChange} />
-                    <input name="memory" type="number" placeholder="Memory" value={formData.memory} onChange={handleChange} />
-                    <input name="harddisk" type="number" placeholder="Hard Disk" value={formData.harddisk} onChange={handleChange} />
-                    <input name="videocontroller" placeholder="Video Controller" value={formData.videocontroller} onChange={handleChange} />
-                    <input name="price" type="number" placeholder="Price" value={formData.price} onChange={handleChange} />
-                    <input name="processorid" type="number" placeholder="Processor ID" value={formData.processorid} onChange={handleChange} />
-                    <input name="opsystemid" type="number" placeholder="OS ID" value={formData.opsystemid} onChange={handleChange} />
-                    <input name="pieces" type="number" placeholder="Pieces" value={formData.pieces} onChange={handleChange} />
+            <div className="form-card">
+                <form className="form" onSubmit={handleSubmit}>
+                    <input
+                        name="manufacturer"
+                        placeholder="Manufacturer"
+                        value={formData.manufacturer}
+                        onChange={handleChange}
+                    />
+                    <input
+                        name="type"
+                        placeholder="Type"
+                        value={formData.type}
+                        onChange={handleChange}
+                    />
 
-                    <div className="form-action-buttons">
-                        <input type="submit" value="Submit" />
+                    <input
+                        className="full-width"
+                        name="display"
+                        type="number"
+                        placeholder="Display"
+                        value={formData.display}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className="full-width"
+                        name="memory"
+                        type="number"
+                        placeholder="Memory"
+                        value={formData.memory}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className="full-width"
+                        name="harddisk"
+                        type="number"
+                        placeholder="Hard Disk"
+                        value={formData.harddisk}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className="full-width"
+                        name="videocontroller"
+                        placeholder="Video Controller"
+                        value={formData.videocontroller}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className="full-width"
+                        name="price"
+                        type="number"
+                        placeholder="Price"
+                        value={formData.price}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className="full-width"
+                        name="processorid"
+                        type="number"
+                        placeholder="Processor ID"
+                        value={formData.processorid}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className="full-width"
+                        name="opsystemid"
+                        type="number"
+                        placeholder="OS ID"
+                        value={formData.opsystemid}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className="full-width"
+                        name="pieces"
+                        type="number"
+                        placeholder="Pieces"
+                        value={formData.pieces}
+                        onChange={handleChange}
+                    />
+
+                    <div className="button-row">
+                        <button type="submit">
+                            {selectedIndex === null ? "Add Notebook" : "Update Notebook"}
+                        </button>
+                        <button type="button" onClick={resetForm}>Clear</button>
                     </div>
-
                 </form>
             </div>
 
-            <br />
-            <div className="notebook-table">
-                <table className="list">
-
+            <div className="table-card">
+                <table>
                     <thead>
                         <tr>
                             <th>Manufacturer</th>
@@ -151,10 +215,8 @@ function App() {
                             </tr>
                         ))}
                     </tbody>
-
                 </table>
             </div>
-
         </div>
     );
 }
