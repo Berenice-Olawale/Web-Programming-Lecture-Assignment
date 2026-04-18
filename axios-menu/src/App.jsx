@@ -23,9 +23,14 @@ function App() {
   }, []);
 
   function loadData() {
-    axios.get("./notebooks.json")
-      .then((res) => setNotebooks(res.data))
-      .catch((err) => console.error(err));
+    axios
+      .get(`${import.meta.env.BASE_URL}notebooks.json`)
+      .then((res) => {
+        setNotebooks(res.data);
+      })
+      .catch((err) => {
+        console.error("Error loading notebooks.json:", err);
+      });
   }
 
   function handleChange(e) {
@@ -102,66 +107,16 @@ function App() {
       <h1>Notebook CRUD (Axios)</h1>
 
       <form onSubmit={handleSubmit} className="form">
-        <input
-          name="manufacturer"
-          placeholder="Manufacturer"
-          value={formData.manufacturer}
-          onChange={handleChange}
-        />
-        <input
-          name="type"
-          placeholder="Type"
-          value={formData.type}
-          onChange={handleChange}
-        />
-        <input
-          name="display"
-          placeholder="Display"
-          value={formData.display}
-          onChange={handleChange}
-        />
-        <input
-          name="memory"
-          placeholder="Memory"
-          value={formData.memory}
-          onChange={handleChange}
-        />
-        <input
-          name="harddisk"
-          placeholder="Hard Disk"
-          value={formData.harddisk}
-          onChange={handleChange}
-        />
-        <input
-          name="videocontroller"
-          placeholder="Video"
-          value={formData.videocontroller}
-          onChange={handleChange}
-        />
-        <input
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-        />
-        <input
-          name="processorid"
-          placeholder="Processor ID"
-          value={formData.processorid}
-          onChange={handleChange}
-        />
-        <input
-          name="opsystemid"
-          placeholder="OS ID"
-          value={formData.opsystemid}
-          onChange={handleChange}
-        />
-        <input
-          name="pieces"
-          placeholder="Pieces"
-          value={formData.pieces}
-          onChange={handleChange}
-        />
+        <input name="manufacturer" placeholder="Manufacturer" value={formData.manufacturer} onChange={handleChange} />
+        <input name="type" placeholder="Type" value={formData.type} onChange={handleChange} />
+        <input name="display" placeholder="Display" value={formData.display} onChange={handleChange} />
+        <input name="memory" placeholder="Memory" value={formData.memory} onChange={handleChange} />
+        <input name="harddisk" placeholder="Hard Disk" value={formData.harddisk} onChange={handleChange} />
+        <input name="videocontroller" placeholder="Video" value={formData.videocontroller} onChange={handleChange} />
+        <input name="price" placeholder="Price" value={formData.price} onChange={handleChange} />
+        <input name="processorid" placeholder="Processor ID" value={formData.processorid} onChange={handleChange} />
+        <input name="opsystemid" placeholder="OS ID" value={formData.opsystemid} onChange={handleChange} />
+        <input name="pieces" placeholder="Pieces" value={formData.pieces} onChange={handleChange} />
 
         <div className="buttons">
           <button type="submit">
