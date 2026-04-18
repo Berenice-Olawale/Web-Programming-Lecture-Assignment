@@ -24,13 +24,13 @@ function App() {
 
   function loadData() {
     axios
-      .get(`${import.meta.env.BASE_URL}notebooks.json`)
+      .get("./notebooks.json")
       .then((res) => {
         setNotebooks(res.data);
-      })
+    })
       .catch((err) => {
         console.error("Error loading notebooks.json:", err);
-      });
+    });
   }
 
   function handleChange(e) {
