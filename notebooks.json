@@ -1,0 +1,41 @@
+[
+  {
+    "id": "1",
+    "manufacturer": "HP",
+    "type": "EliteBook 840",
+    "display": "14",
+    "memory": "8",
+    "harddisk": "256",
+    "videocontroller": "Intel UHD",
+    "price": "750",
+    "processorid": "10",
+    "opsystemid": "1",
+    "pieces": "6"
+  },
+  {
+    "id": "2",
+    "manufacturer": "Dell",
+    "type": "Latitude 5420",
+    "display": "14",
+    "memory": "16",
+    "harddisk": "512",
+    "videocontroller": "Intel Iris Xe",
+    "price": "1100",
+    "processorid": "11",
+    "opsystemid": "1",
+    "pieces": "4"
+  },
+  {
+    "id": "3",
+    "manufacturer": "Lenovo",
+    "type": "ThinkPad T14",
+    "display": "14",
+    "memory": "16",
+    "harddisk": "512",
+    "videocontroller": "AMD Radeon",
+    "price": "1050",
+    "processorid": "12",
+    "opsystemid": "1",
+    "pieces": "5"
+  }
+]

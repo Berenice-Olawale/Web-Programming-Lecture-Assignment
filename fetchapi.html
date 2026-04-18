@@ -1,34 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Fetch API CRUD</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API Notebook CRUD Application</title>
     <style>
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
             background: #f4f6f9;
-            padding: 20px;
+            margin: 0;
+            padding: 30px;
         }
 
-        .form, .table-container {
+        h1 {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 48px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #dbe3ec;
+            margin-bottom: 30px;
+        }
+
+        .form-card {
             background: white;
-            padding: 20px;
-            margin: auto;
-            width: 200%;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
         }
 
         input {
             width: 100%;
-            margin: 5px 0;
-            padding: 8px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .button-row {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         button {
-            margin-top: 5px;
-            padding: 6px;
+            padding: 10px 16px;
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #0284c7;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 14px;
+            overflow-x: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            margin: 0 auto;
+            width: 90%;
+            max-width: 1400px;
         }
 
         table {
@@ -36,165 +76,180 @@
             border-collapse: collapse;
         }
 
-        td, th {
-            border: 1px solid #ddd;
-            padding: 8px;
+        th {
+            background: #1e293b;
+            color: white;
+            padding: 14px 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .action-btn {
+            margin-right: 8px;
         }
     </style>
 </head>
-
 <body>
 
-<h1>Fetch API CRUD - Notebooks</h1>
+    <h1>Fetch API Notebook CRUD Application</h1>
+    <hr>
 
-<div class="form">
-<form onsubmit="event.preventDefault(); onSubmit();">
+    <div class="form-card">
+        <form onsubmit="event.preventDefault(); onSubmit();">
+            <div class="form-grid">
+                <input id="manufacturer" placeholder="Manufacturer">
+                <input id="type" placeholder="Type">
 
-<input id="manufacturer" placeholder="Manufacturer">
-<input id="type" placeholder="Type">
-<input id="display" placeholder="Display">
-<input id="memory" placeholder="Memory">
-<input id="harddisk" placeholder="Harddisk">
-<input id="videocontroller" placeholder="Video Controller">
-<input id="price" placeholder="Price">
-<input id="processorid" placeholder="Processor ID">
-<input id="opsystemid" placeholder="OS ID">
-<input id="pieces" placeholder="Pieces">
+                <input id="display" placeholder="Display" class="full-width">
+                <input id="memory" placeholder="Memory" class="full-width">
+                <input id="harddisk" placeholder="Hard Disk" class="full-width">
+                <input id="videocontroller" placeholder="Video Controller" class="full-width">
+                <input id="price" placeholder="Price" class="full-width">
+                <input id="processorid" placeholder="Processor ID" class="full-width">
+                <input id="opsystemid" placeholder="OS ID" class="full-width">
+                <input id="pieces" placeholder="Pieces" class="full-width">
 
-<button type="submit">Submit</button>
+                <div class="button-row">
+                    <button type="submit" id="submitBtn">Add Notebook</button>
+                    <button type="button" onclick="clearForm()">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-</form>
-</div>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Manufacturer</th>
+                    <th>Type</th>
+                    <th>Display</th>
+                    <th>Memory</th>
+                    <th>Disk</th>
+                    <th>Video</th>
+                    <th>Price</th>
+                    <th>Processor</th>
+                    <th>OS</th>
+                    <th>Pieces</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
 
-<br>
+    <script>
+        let notebooks = [];
+        let selectedId = null;
 
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Manufacturer</th>
-<th>Type</th>
-<th>Display</th>
-<th>Memory</th>
-<th>Disk</th>
-<th>Video</th>
-<th>Price</th>
-<th>Processor</th>
-<th>OS</th>
-<th>Pieces</th>
-<th>Actions</th>
-</tr>
-</thead>
+        function loadData() {
+            fetch("./notebooks.json")
+                .then(res => res.json())
+                .then(data => {
+                    notebooks = data;
+                    displayData();
+                })
+                .catch(err => console.error("Error loading notebooks:", err));
+        }
 
-<tbody id="tableBody"></tbody>
-</table>
-</div>
+        function displayData() {
+            const table = document.getElementById("tableBody");
+            table.innerHTML = "";
 
-<script>
+            notebooks.forEach(item => {
+                const row = table.insertRow();
 
-const API_URL = "http://localhost:3000/notebooks";
-let selectedId = null;
+                row.innerHTML = `
+                    <td>${item.manufacturer}</td>
+                    <td>${item.type}</td>
+                    <td>${item.display}</td>
+                    <td>${item.memory}</td>
+                    <td>${item.harddisk}</td>
+                    <td>${item.videocontroller}</td>
+                    <td>${item.price}</td>
+                    <td>${item.processorid}</td>
+                    <td>${item.opsystemid}</td>
+                    <td>${item.pieces}</td>
+                    <td>
+                        <button class="action-btn" onclick="editData('${item.id}')">Edit</button>
+                        <button onclick="deleteData('${item.id}')">Delete</button>
+                    </td>
+                `;
+            });
+        }
 
-// LOAD DATA
-function loadData() {
-    fetch(API_URL)
-    .then(res => res.json())
-    .then(data => displayData(data));
-}
+        function onSubmit() {
+            const data = {
+                manufacturer: document.getElementById("manufacturer").value,
+                type: document.getElementById("type").value,
+                display: document.getElementById("display").value,
+                memory: document.getElementById("memory").value,
+                harddisk: document.getElementById("harddisk").value,
+                videocontroller: document.getElementById("videocontroller").value,
+                price: document.getElementById("price").value,
+                processorid: document.getElementById("processorid").value,
+                opsystemid: document.getElementById("opsystemid").value,
+                pieces: document.getElementById("pieces").value
+            };
 
-// DISPLAY
-function displayData(data) {
-    let table = document.getElementById("tableBody");
-    table.innerHTML = "";
+            if (data.manufacturer.trim() === "") {
+                alert("Manufacturer is required");
+                return;
+            }
 
-    data.forEach(item => {
-        let row = table.insertRow();
+            if (selectedId === null) {
+                data.id = Date.now().toString();
+                notebooks.push(data);
+            } else {
+                notebooks = notebooks.map(item =>
+                    item.id === selectedId ? { ...data, id: selectedId } : item
+                );
+                selectedId = null;
+                document.getElementById("submitBtn").textContent = "Add Notebook";
+            }
 
-        row.innerHTML = `
-            <td>${item.manufacturer}</td>
-            <td>${item.type}</td>
-            <td>${item.display}</td>
-            <td>${item.memory}</td>
-            <td>${item.harddisk}</td>
-            <td>${item.videocontroller}</td>
-            <td>${item.price}</td>
-            <td>${item.processorid}</td>
-            <td>${item.opsystemid}</td>
-            <td>${item.pieces}</td>
-            <td>
-                <button onclick="editData(${item.id})">Edit</button>
-                <button onclick="deleteData(${item.id})">Delete</button>
-            </td>
-        `;
-    });
-}
+            displayData();
+            document.querySelector("form").reset();
+        }
 
-// CREATE / UPDATE
-function onSubmit() {
+        function editData(id) {
+            const data = notebooks.find(item => item.id === id);
 
-    let data = {
-        manufacturer: manufacturer.value,
-        type: type.value,
-        display: display.value,
-        memory: memory.value,
-        harddisk: harddisk.value,
-        videocontroller: videocontroller.value,
-        price: price.value,
-        processorid: processorid.value,
-        opsystemid: opsystemid.value,
-        pieces: pieces.value
-    };
+            document.getElementById("manufacturer").value = data.manufacturer;
+            document.getElementById("type").value = data.type;
+            document.getElementById("display").value = data.display;
+            document.getElementById("memory").value = data.memory;
+            document.getElementById("harddisk").value = data.harddisk;
+            document.getElementById("videocontroller").value = data.videocontroller;
+            document.getElementById("price").value = data.price;
+            document.getElementById("processorid").value = data.processorid;
+            document.getElementById("opsystemid").value = data.opsystemid;
+            document.getElementById("pieces").value = data.pieces;
 
-    if (selectedId == null) {
-        fetch(API_URL, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        }).then(loadData);
-    } else {
-        fetch(API_URL + "/" + selectedId, {
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        }).then(() => {
+            selectedId = id;
+            document.getElementById("submitBtn").textContent = "Update Notebook";
+        }
+
+        function deleteData(id) {
+            notebooks = notebooks.filter(item => item.id !== id);
+            displayData();
+        }
+
+        function clearForm() {
+            document.querySelector("form").reset();
             selectedId = null;
-            loadData();
-        });
-    }
+            document.getElementById("submitBtn").textContent = "Add Notebook";
+        }
 
-    document.querySelector("form").reset();
-}
-
-// DELETE
-function deleteData(id) {
-    fetch(API_URL + "/" + id, {
-        method: "DELETE"
-    }).then(loadData);
-}
-
-// EDIT
-function editData(id) {
-    fetch(API_URL + "/" + id)
-    .then(res => res.json())
-    .then(data => {
-        manufacturer.value = data.manufacturer;
-        type.value = data.type;
-        display.value = data.display;
-        memory.value = data.memory;
-        harddisk.value = data.harddisk;
-        videocontroller.value = data.videocontroller;
-        price.value = data.price;
-        processorid.value = data.processorid;
-        opsystemid.value = data.opsystemid;
-        pieces.value = data.pieces;
-
-        selectedId = id;
-    });
-}
-
-loadData();
-
-</script>
-
+        loadData();
+    </script>
 </body>
 </html>
