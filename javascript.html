@@ -4,59 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notebook CRUD Application</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1><center>Notebook CRUD Application</center></h1>
+
+    <h1>Notebook CRUD Application</h1>
     <hr>
+
     <div class="notebook-form">
         <form onsubmit="event.preventDefault();onFormSubmit();">
+
             <div>
-                <label for="">Manufacturer*</label><label for="" class="validation-error hide" id="ManufacturerValidationError">This field is required.</label>
+                <label>Manufacturer*</label>
+                <label class="validation-error hide" id="ManufacturerValidationError">
+                    This field is required.
+                </label>
                 <input type="text" name="Manufacturer" id="Manufacturer">
             </div>
+
             <div>
-                <label for="">Type</label>
+                <label>Type</label>
                 <input type="text" name="Type" id="Type">
             </div>
+
             <div>
-                <label for="">Display</label>
+                <label>Display</label>
                 <input type="number" name="Display" id="Display">
             </div>
+
             <div>
-                <label for="">Memory (MIB)</label>
+                <label>Memory (MIB)</label>
                 <input type="number" name="Memory" id="Memory">
             </div>
+
             <div>
-                <label for="">Hard Disk (GB)</label>
+                <label>Hard Disk (GB)</label>
                 <input type="number" name="Harddisk" id="Harddisk">
             </div>
+
             <div>
-                <label for="">Video Controller</label>
+                <label>Video Controller</label>
                 <input type="text" name="VideoController" id="VideoController">
             </div>
+
             <div>
-                <label for="">Price (£)</label>
+                <label>Price (£)</label>
                 <input type="number" name="Price" id="Price">
             </div>
-             <div>
-                <label for="">Processor ID</label>
+
+            <div>
+                <label>Processor ID</label>
                 <input type="number" name="ProcessorID" id="ProcessorID">
             </div>
-             <div>
-                <label for="">OS ID</label>
+
+            <div>
+                <label>OS ID</label>
                 <input type="number" name="OSID" id="OSID">
             </div>
-             <div>
-                <label for="">Pieces in Stock</label>
+
+            <div>
+                <label>Pieces in Stock</label>
                 <input type="number" name="Pieces" id="Pieces">
-                <div class="form-action">
-                    <input type="submit" value="Submit">
-                </div>
             </div>
+
+            <div class="form-action">
+                <input type="submit" value="Submit">
+            </div>
+
         </form>
     </div>
-    <br>
+
     <div class="notebook-table">
         <table class="list" id="notebookList">
             <thead>
@@ -71,11 +89,14 @@
                     <th>Processor ID</th>
                     <th>OS ID</th>
                     <th>Pieces in Stock</th>
-                    <th></th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
-    <script type="text/javascript" src="script.js"></script>
+    </div>
+
+    <script src="script.js"></script>
+
 </body>
 </html>

@@ -1,11 +1,12 @@
 var selectedIndex = null;
 var array1 = new Array();
+
 function onFormSubmit() {
-    if(validate()){
+    if (validate()) {
         var formData = readFormData();
-        if(selectedIndex == null){
+        if (selectedIndex == null) {
             insertNewRecord(formData);
-        }else{
+        } else {
             updateRecord(formData);
         }
         resetForm();
@@ -28,39 +29,43 @@ function readFormData() {
 }
 
 function insertNewRecord(data) {
-    array1[array1.length] = {"Manufacturer": data.Manufacturer, "Type": data.Type, "Display": data.Display, "Memory": data.Memory, "Harddisk": data.Harddisk, "VideoController": data.VideoController, "Price": data.Price, "ProcessorID": data.ProcessorID, "OSID": data.OSID, "Pieces": data.Pieces};
+    array1[array1.length] = {
+        "Manufacturer": data.Manufacturer,
+        "Type": data.Type,
+        "Display": data.Display,
+        "Memory": data.Memory,
+        "Harddisk": data.Harddisk,
+        "VideoController": data.VideoController,
+        "Price": data.Price,
+        "ProcessorID": data.ProcessorID,
+        "OSID": data.OSID,
+        "Pieces": data.Pieces
+    };
     printArray();
 }
 
 function printArray() {
-    var table = document.getElementById("notebookList").getElementsByTagName('tbody')[0];
+    var table = document.getElementById("notebookList").getElementsByTagName("tbody")[0];
     table.innerHTML = "";
-    var newRow;
-    for(var i = 0; i < array1.length; i++){
-        newRow = table.insertRow(table.length);
-        cell1 = newRow.insertCell(0);
-        cell1.innerHTML = array1[i].Manufacturer;
-        cell2 = newRow.insertCell(1);
-        cell2.innerHTML = array1[i].Type;
-        cell3 = newRow.insertCell(2);
-        cell3.innerHTML = array1[i].Display;
-        cell4 = newRow.insertCell(3);
-        cell4.innerHTML = array1[i].Memory;
-        cell5 = newRow.insertCell(4);
-        cell5.innerHTML = array1[i].Harddisk;
-        cell6 = newRow.insertCell(5);
-        cell6.innerHTML = array1[i].VideoController;
-        cell7 = newRow.insertCell(6);
-        cell7.innerHTML = array1[i].Price;
-        cell8 = newRow.insertCell(7);
-        cell8.innerHTML = array1[i].ProcessorID;
-        cell9 = newRow.insertCell(8);
-        cell9.innerHTML = array1[i].OSID;
-        cell10 = newRow.insertCell(9);
-        cell10.innerHTML = array1[i].Pieces;
-        cell11 = newRow.insertCell(10);
-        cell11.innerHTML = `<a onClick="onEdit('+i+')">Edit</a>'+'
-                            <a onClick="onDelete('+i+')">Delete</a>`;
+
+    for (var i = 0; i < array1.length; i++) {
+        var newRow = table.insertRow(table.length);
+
+        newRow.insertCell(0).innerHTML = array1[i].Manufacturer;
+        newRow.insertCell(1).innerHTML = array1[i].Type;
+        newRow.insertCell(2).innerHTML = array1[i].Display;
+        newRow.insertCell(3).innerHTML = array1[i].Memory;
+        newRow.insertCell(4).innerHTML = array1[i].Harddisk;
+        newRow.insertCell(5).innerHTML = array1[i].VideoController;
+        newRow.insertCell(6).innerHTML = array1[i].Price;
+        newRow.insertCell(7).innerHTML = array1[i].ProcessorID;
+        newRow.insertCell(8).innerHTML = array1[i].OSID;
+        newRow.insertCell(9).innerHTML = array1[i].Pieces;
+
+        var cell11 = newRow.insertCell(10);
+        cell11.innerHTML =
+            '<a onClick="onEdit(' + i + ')">Edit</a>' +
+            '<a onClick="onDelete(' + i + ')">Delete</a>';
     }
 }
 
@@ -79,7 +84,6 @@ function resetForm() {
 }
 
 function onEdit(index) {
-    selectedIndex = index;
     document.getElementById("Manufacturer").value = array1[index].Manufacturer;
     document.getElementById("Type").value = array1[index].Type;
     document.getElementById("Display").value = array1[index].Display;
@@ -108,7 +112,7 @@ function updateRecord(formData) {
 }
 
 function onDelete(index) {
-    if(confirm("Are you sure to delete this record?")){
+    if (confirm("Are you sure to delete this record?")) {
         array1.splice(index, 1);
         resetForm();
         printArray();
@@ -116,15 +120,16 @@ function onDelete(index) {
 }
 
 function validate() {
-    isValid = true;
-    if(document.getElementById("Manufacturer").value == ""){
+    var isValid = true;
+
+    if (document.getElementById("Manufacturer").value == "") {
         isValid = false;
         document.getElementById("ManufacturerValidationError").classList.remove("hide");
     } else {
-        isValid = true;
-        if(!document.getElementById("ManufacturerValidationError").classList.contains("hide")){
+        if (!document.getElementById("ManufacturerValidationError").classList.contains("hide")) {
             document.getElementById("ManufacturerValidationError").classList.add("hide");
         }
     }
+
     return isValid;
 }
